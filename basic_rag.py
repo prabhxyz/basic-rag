@@ -1,8 +1,8 @@
 """
-RAG (from-scratch, no APIs)
+RAG (from scratch, no APIs)
 
 Run:
-  python rag_from_scratch_demo.py --docs path/to/folder --query "the question"
+  python basic_rag.py --docs path/to/folder --query "the question"
 """
 
 import os, re, math, argparse, glob, textwrap
