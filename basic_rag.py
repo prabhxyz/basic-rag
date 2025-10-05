@@ -169,6 +169,7 @@ def build_docs_from_folder(folder):
     return [(n, textwrap.dedent(t)) for n,t in toy]
 
 def main():
+    start_time = time.perf_counter()  # timer for performance metrics
     ap = argparse.ArgumentParser()
     ap.add_argument('--docs', type=str, default='', help='folder of .txt/.md etc')
     ap.add_argument('--query', type=str, default='what is attention scaling and why?', help='question')
@@ -182,6 +183,9 @@ def main():
     rag = RAG(docs, L=args.L, S=args.S, topk=args.topk)
     hits, summ = rag.ask(args.query, summary_sentences=args.K)
 
+    end_time = time.perf_counter()  # end timer
+    runtime = np.round(end_time - start_time, 8) * 1000  # in milliseconds
+
     print("\n== Query ==\n" + args.query)
     print("\n== Top Passages ==")
     for rank,(i,score,chunk,meta) in enumerate(hits,1):
@@ -191,6 +195,7 @@ def main():
     print("\n== Answer (extractive) ==")
     for s in summ:
         print("- "+s)
+    print(f'\nran RAG in {runtime} milliseconds')  # print runtime
 
 if __name__ == '__main__':
     main()
